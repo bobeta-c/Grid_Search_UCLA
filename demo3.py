@@ -11,6 +11,8 @@ url = "https://sa.ucla.edu/ro/Public/SOC/Results/ClassroomDetail?term=24W&classr
 driver = webdriver.Chrome()
 driver.get(url)
 
+#divik is stupid as fuck
+
 # Wait for the shadow DOM element to be present
 try:
     element_present = EC.presence_of_element_located((By.CSS_SELECTOR, '#block-mainpagecontent div ucla-sa-soc-app'))
