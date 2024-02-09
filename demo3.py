@@ -3,7 +3,55 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-url = "https://sa.ucla.edu/ro/Public/SOC/Results/ClassroomDetail?term=24W&classroom=DODD++++%7C++00167++" 
+url = "https://sa.ucla.edu/ro/Public/SOC/Results/ClassroomDetail?term=24W&classroom="
+
+
+import sqlite3
+
+con = sqlite3.connect("UCLA_BUILDING_STRUCTURE.db")
+cur = con.cursor() #setup
+
+cur.execute("SELECT * FROM buildings")
+building_info = cur.fetchall()
+for building in building_info:
+    name = building[1]
+    b_id = building[0]
+    cur.execute("SELECT room_number FROM rooms WHERE building_id = ?", (b_id,)) #get all rooms in the building
+    room_info = cur.fetchone()
+    for room in room_info:
+        room_number = room[0]
+        name_string = name
+        for i in range(8-len(name)):
+            name_string += '#'
+        room_string = "++00000++"
+        if(room_number[0].isalpha()):
+            if(room_number[1].isalpha()):
+                room_string[0] = room_number[0]
+                room = room
+                room_string[1] = room_number[1]
+                room_number = room_number[2:]
+            else:
+                room_string[1] = room_number[0]
+                room_number = room_number[1:]
+        if(room_number[-1].isalpha()):
+            if(room_number[-2].isalpha()):
+                room_string[-1] = room_number[-1]
+                room_string[-2] = room_number[-2]
+                room_number = room_number[:-2]
+            else:
+                room_string[-2] = room_number[-1]
+                room_number = room_number[:-1]
+        room_number = int(room_number)
+        i = 0
+        while(room_number > 0):
+            room_string[6-i] = room_number % 10
+            room_number = room_number//10
+            i += 1
+
+        url += name_string + "%7C" + room_string 
+        print(url)
+exit()
+exit
 
 
 # Set up the Selenium WebDriver (make sure you have chromedriver installed)
