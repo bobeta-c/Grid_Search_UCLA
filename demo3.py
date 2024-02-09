@@ -3,9 +3,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-url = "https://sa.ucla.edu/ro/Public/SOC/Results/ClassroomDetail?term=24W&classroom=DODD++++%7C++00167++"
+url = "https://sa.ucla.edu/ro/Public/SOC/Results/ClassroomDetail?term=24W&classroom=DODD++++%7C++00167++" 
+
 
 # Set up the Selenium WebDriver (make sure you have chromedriver installed)
+
 driver = webdriver.Chrome()
 driver.get(url)
 
