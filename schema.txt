@@ -1,0 +1,26 @@
+CREATE TABLE buildings (
+                    id INTEGER,
+                    name TEXT NOT NULL,
+                    location TEXT,
+                    PRIMARY KEY(id)
+                );
+CREATE TABLE rooms (
+                    id INTEGER,
+                    building_id INTEGER NOT NULL,
+                    room_number TEXT NOT NULL,  
+                    FOREIGN KEY(building_id) REFERENCES buildings(id),
+                    PRIMARY KEY(id)
+                );
+CREATE TABLE classes (
+                start_time INTEGER NOT NULL,
+                end_time INTEGER NOT NULL,
+                room_id INTEGER NOT NULL,
+                quarter_id INTEGER NOT NULL,
+                FOREIGN KEY(room_id) REFERENCES rooms(id),
+                FOREIGN KEY(quarter_id) REFERENCES quarters(id)
+            );
+CREATE TABLE quarters (
+                name TEXT NOT NULL,
+                id INTEGER,
+                PRIMARY KEY(id)
+            );
