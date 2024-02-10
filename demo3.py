@@ -1,4 +1,12 @@
 def minPastMid(timeStamp):
+    if(int(timeStamp[0]) >= 8):
+        return int(timeStamp[0])*60 + int(timeStamp[2:])
+    elif(len(timeStamp) == 4):
+         return int(timeStamp[0])*60 + 12*60 + int(timeStamp[2:])
+    else:
+        return int(timeStamp[0:2])*60 + int(timeStamp[3:])
+    return -1
+
     
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -59,8 +67,8 @@ for building in building_info:
 
 
 # Set up the Selenium WebDriver (make sure you have chromedriver installed)
-for url_to_use in url_list:
-
+for j, url_to_use in enumerate(url_list[76+206+10+717+60:]): #1069 elements?
+    print(j, url_to_use)
 
     driver = webdriver.Chrome()
     driver.get(url_to_use[0])
@@ -104,26 +112,27 @@ for url_to_use in url_list:
     room_num = url_to_use[2]
     bldg_id = url_to_use[1]
 
-    cur.execute("SELECT id FROM rooms WHERE room_number = ? AND building_id = ?", room_num, bldg_id)
+    cur.execute("SELECT id FROM rooms WHERE room_number = ? AND building_id = ?", (room_num, bldg_id))
     room_id = cur.fetchone()
     if room_id:
         room_id = room_id[0]
 
         # Print the extracted content
         for i, fc_time_array in enumerate(result):
-            times = fc_time_array[6:-7]
-            start_time = times[:5].strip()
-            end_time = times[7:].strip()
-            start_time_i = minPastMid(start_time)
-            end_time_i = minPastMid(end_time)
-            
-            cur.execute("INSERT INTO classes (start_time, end_time, room_id, quarter_id, day_of_week) VALUES (?, ?, ?, ?, ?)", (start_time_i, end_time_i, room_id, 1, i))
-
-            #commit the changes
-            con.commit()
             print(f"fc-event-container {i + 1}:")
             for fc_time in fc_time_array:
                 print(f"  {fc_time}")
+
+                times = fc_time[6:-7]
+                start_time = times[:5].strip()
+                end_time = times[7:].strip()
+                start_time_i = minPastMid(start_time)
+                end_time_i = minPastMid(end_time)
+            
+                cur.execute("INSERT INTO classes (start_time, end_time, room_id, quarter_id, day_of_week) VALUES (?, ?, ?, ?, ?)", (start_time_i, end_time_i, room_id, 1, i))
+
+            #commit the changes
+                con.commit()
 
     else:
         print("ERROR")
