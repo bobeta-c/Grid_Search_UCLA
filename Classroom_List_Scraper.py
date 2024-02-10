@@ -1,3 +1,5 @@
+SQL_PATH = "UCLA_BUILDING_STRUCTURE.db"
+
 import sqlite3
 
 from selenium import webdriver
@@ -52,7 +54,7 @@ for item in result:
     Rooms[item[:9].strip()] = Rooms[item[:9].strip()] + [item[9:]]
 
 
-con = sqlite3.connect("random.db")
+con = sqlite3.connect(SQL_PATH)
 cur = con.cursor()
 
 for x in Rooms.keys():

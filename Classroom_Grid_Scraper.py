@@ -1,11 +1,14 @@
-def minPastMid(timeStamp):
+SQL_PATH = "UCLA_BUILDING_STRUCTURE.db"
+TERM = "24W"
+
+
+def minPastMid(timeStamp): #return the time in minutes-past-midnight for times of form HH:MM between 8:00 AM and 5:00 PM
     if(int(timeStamp[0]) >= 8):
         return int(timeStamp[0])*60 + int(timeStamp[2:])
     elif(len(timeStamp) == 4):
          return int(timeStamp[0])*60 + 12*60 + int(timeStamp[2:])
     else:
         return int(timeStamp[0:2])*60 + int(timeStamp[3:])
-    return -1
 
     
 from selenium import webdriver
@@ -13,22 +16,21 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-url_list = []
-
 import sqlite3
 
-con = sqlite3.connect("UCLA_BUILDING_STRUCTURE.db")
+url_list = []
+con = sqlite3.connect(SQL_PATH) #connect to the database
 cur = con.cursor() #setup
 
-cur.execute("SELECT * FROM buildings")
-building_info = cur.fetchall()
+cur.execute("SELECT * FROM buildings") 
+building_info = cur.fetchall() #get all buildings
 for building in building_info:
     name = building[1]
     b_id = building[0]
     cur.execute("SELECT room_number FROM rooms WHERE building_id = ?", (b_id,)) #get all rooms in the building
-    room_info = cur.fetchall()
+    room_info = cur.fetchall() #room_info is the list of all rooms
     for room in room_info:
-        url = "https://sa.ucla.edu/ro/Public/SOC/Results/ClassroomDetail?term=24W&classroom="
+        url = "https://sa.ucla.edu/ro/Public/SOC/Results/ClassroomDetail?term=" + TERM + "&classroom="
         room_number = room[0]
         room_number_saved = room[0]
         name_string = name
@@ -67,7 +69,7 @@ for building in building_info:
 
 
 # Set up the Selenium WebDriver (make sure you have chromedriver installed)
-for j, url_to_use in enumerate(url_list[76+206+10+717+60:]): #1069 elements?
+for j, url_to_use in enumerate(url_list[]): #1069 elements?
     print(j, url_to_use)
 
     driver = webdriver.Chrome()
