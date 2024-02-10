@@ -2,7 +2,7 @@ import sys
 import sqlite3
 
 SQL_PATH = "UCLA_BUILDING_STRUCTURE.db"
-DT = 30
+DT = 120
 
 building = sys.argv[1].upper()
 day = int(sys.argv[2])
