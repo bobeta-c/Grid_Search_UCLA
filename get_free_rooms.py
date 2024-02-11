@@ -3,10 +3,14 @@ import sqlite3
 
 SQL_PATH = "UCLA_BUILDING_STRUCTURE.db"
 DT = 120
+if(len(sys.argv) != 5):
+    print("ERROR: please type python get_free_rooms.py <BUILDING> <DAY> <CURRENT_TIME> <DELTA TIME>")
+    exit()
 
 building = sys.argv[1].upper()
 day = int(sys.argv[2])
 current_time = int(sys.argv[3])
+DT = int(sys.argv[4])
 
 if not (day < 5 and day >=0):
     print(f"ERROR {day} is not a valid day (0,1,2,3,4)")
